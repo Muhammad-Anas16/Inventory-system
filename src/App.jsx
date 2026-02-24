@@ -1,9 +1,10 @@
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import { Route, Routes } from 'react-router';
-import './App.css'
-import HomePage from './component/page/HomePage';
+import { Route, Routes } from "react-router";
+import "./App.css";
+import HomePage from "./component/page/HomePage";
+import InventoryPAge from "./component/page/InventoryPAge";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -33,10 +34,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/inventory" element={<InventoryPAge />} />
       </Routes>
-
     </>
-  )
+  );
 }
 
-export default App
+export default App;
