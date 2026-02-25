@@ -6,34 +6,39 @@ import { PiArrowsClockwiseBold } from "react-icons/pi";
 
 const Header = () => {
   const [isSynced] = useState(false);
+
   return (
-    <header className="bg-white flex items-center justify-between mb-6 px-4 py-4 rounded-lg shadow">
-      <div className="flex items-center justify-center gap-4 text-slate-900 cursor-pointer">
-        <div className="size-8 bg-blue-600/20 text-blue-500 rounded-full flex items-center justify-center p-1.5">
-          <MdOutlineGridOn size={30} />
+    <header className="bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 px-4 py-4 rounded-lg shadow w-full">
+      {/* Left */}
+      <div className="flex items-center gap-3">
+        <div className="size-8 sm:size-9 bg-blue-600/20 text-blue-500 rounded-full flex items-center justify-center p-1.5">
+          <MdOutlineGridOn size={22} />
         </div>
-        <h2 className="text-xl font-extrabold tracking-tight leading-tight">
+
+        <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight leading-tight">
           Inventory
         </h2>
       </div>
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-md text-slate-500 rounded-full px-3 py-1 bg-slate-100 transition-colors duration-200 hover:bg-slate-200 font-bold cursor-pointer">
-          <GoDotFill size={20} className="text-green-500" />
-          Synce Sheet
+
+      {/* Right */}
+      <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-2 text-sm sm:text-base text-slate-600 rounded-full px-3 py-1 bg-slate-100 hover:bg-slate-200 transition-colors duration-200 font-semibold cursor-pointer whitespace-nowrap">
+          <GoDotFill size={14} className="text-green-500" />
+          <span className="xs:inline">Sync Sheet</span>
+
           {isSynced ? (
-            <FaRegCheckCircle size={20} className="text-green-500" />
+            <FaRegCheckCircle size={16} className="text-green-500" />
           ) : (
             <PiArrowsClockwiseBold
-              size={20}
-              className="text-green-500 animate-spin font-extrabold"
+              size={16}
+              className="text-green-500 animate-spin"
             />
           )}
         </div>
-        <button className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer">
-          <div
-            className="size-8 rounded-full overflow-hidden border border-slate-200 bg-slate-100"
-            data-alt="User avatar placeholder"
-          >
+
+        {/* Avatar */}
+        <button className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors">
+          <div className="size-8 sm:size-9 rounded-full overflow-hidden border border-slate-200 bg-slate-100">
             <img
               alt="User Profile"
               className="w-full h-full object-cover"
