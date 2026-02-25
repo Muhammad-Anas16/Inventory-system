@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../reusable/Header";
 import TopBar from "../InventoryComponents/topBar";
 
-const InventoryPAge = () => {
+const InventoryPage = () => {
   const [headers, setHeaders] = useState(() => {
     const savedHeaders = localStorage.getItem("headers");
     return savedHeaders ? JSON.parse(savedHeaders) : ["#", "Name"];
@@ -25,8 +25,6 @@ const InventoryPAge = () => {
     <div>
       <Header />
       <TopBar />
-      inventory
-      {/* <button onClick={addHeader}>Add Header</button> */}
       <table>
         <thead>
           <tr className="">
@@ -41,7 +39,7 @@ const InventoryPAge = () => {
             <th
               onClick={() => setShowInput(true)}
               className={`${!showInput ? "px-4 py-2" : ""} border border-slate-300 text-left text-[#6B7A90] font-bold uppercase bg-[#F8FAFC]`}
-              style={{ cursor: "pointer", background: "#eee" }}
+              style={{ cursor: "pointer", background: "#F8FAFC" }}
             >
               {showInput ? (
                 <input
@@ -57,10 +55,21 @@ const InventoryPAge = () => {
               )}
             </th>
           </tr>
+          <tr>
+            {headers.map((header, index) => (
+              <td
+                key={index}
+                id={header}
+                className="px-4 py-2 border border-slate-300 text-left text-[#6B7A90] font-bold uppercase bg-[#F8FAFC]"
+              >
+                
+              </td>
+            ))}
+          </tr>
         </thead>
       </table>
     </div>
   );
 };
 
-export default InventoryPAge;
+export default InventoryPage;
