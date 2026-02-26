@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import Header from "../reusable/Header";
 import TopBar from "../InventoryComponents/topBar";
+import TableHeadRow from "../InventoryComponents/TableHeadRow";
+
+import TableInputRow from "../InventoryComponents/TableInputRow";
+import TableDataRow from "../InventoryComponents/TableDataRow";
 
 const InventoryPage = () => {
   const [headers, setHeaders] = useState(() => {
@@ -10,7 +14,32 @@ const InventoryPage = () => {
   const [showInput, setShowInput] = useState(false);
   const [newHeader, setNewHeader] = useState("");
 
+  const [rowData, setRowData] = useState({});
+  const [rows, setRows] = useState(() => {
+    const savedRows = localStorage.getItem("rows");
+    return savedRows ? JSON.parse(savedRows) : [];
+  });
+
+  const addRow = () => {
+    if (Object.keys(rowData).length === 0) {
+      alert("Please fill in the fields before saving.");
+      return;
+    }
+    setRows([...rows, rowData]);
+    setRowData({});
+  };
+
   const addHeader = (e) => {
+    if (e.key === "Escape") {
+      setShowInput(false);
+      setNewHeader("");
+      return;
+    }
+    if (e.key === "Enter" && newHeader.trim() === "") {
+      setShowInput(false);
+      alert("Header cannot be empty.");
+      return;
+    }
     if (e.key === "Enter" && newHeader.trim() !== "") {
       setHeaders([...headers, newHeader]);
       setNewHeader("");
@@ -19,55 +48,47 @@ const InventoryPage = () => {
   };
   useEffect(() => {
     localStorage.setItem("headers", JSON.stringify(headers));
-  }, [headers]);
+    localStorage.setItem("rows", JSON.stringify(rows));
+  }, [headers, rows]);
 
   return (
     <div>
       <Header />
-      <TopBar />
-      <table>
-        <thead>
-          <tr className="">
-            {headers.map((header, index) => (
-              <th
+      <TopBar setShowInput={setShowInput} />
+      <div className="overflow-auto p-4">
+        <table className="min-w-full border-collapse">
+          <thead>
+            <TableHeadRow
+              headers={headers}
+              showInput={showInput}
+              newHeader={newHeader}
+              setNewHeader={setNewHeader}
+              addHeader={addHeader}
+            />
+          </thead>
+
+          <tbody>
+            <TableInputRow
+              headers={headers}
+              rowData={rowData}
+              setRowData={setRowData}
+              addRow={addRow}
+            />
+
+
+            {rows.map((row, index) => (
+              <TableDataRow
                 key={index}
-                className="px-4 py-2 border border-slate-300 text-left text-[#6B7A90] font-bold uppercase bg-[#F8FAFC]"
-              >
-                {header}
-              </th>
+                headers={headers}
+                row={row}
+                index={index}
+                rows={rows}
+                setRows={setRows}
+              />
             ))}
-            <th
-              onClick={() => setShowInput(true)}
-              className={`${!showInput ? "px-4 py-2" : ""} border border-slate-300 text-left text-[#6B7A90] font-bold uppercase bg-[#F8FAFC]`}
-              style={{ cursor: "pointer", background: "#F8FAFC" }}
-            >
-              {showInput ? (
-                <input
-                  type="text"
-                  value={newHeader}
-                  onChange={(e) => setNewHeader(e.target.value)}
-                  onKeyDown={addHeader}
-                  autoFocus
-                  className="w-28 h-10 border border-slate-300 text-left text-[#929dac] font-bold uppercase bg-white px-2 outline-none"
-                />
-              ) : (
-                "Add Field"
-              )}
-            </th>
-          </tr>
-          <tr>
-            {headers.map((header, index) => (
-              <td
-                key={index}
-                id={header}
-                className="px-4 py-2 border border-slate-300 text-left text-[#6B7A90] font-bold uppercase bg-[#F8FAFC]"
-              >
-                
-              </td>
-            ))}
-          </tr>
-        </thead>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

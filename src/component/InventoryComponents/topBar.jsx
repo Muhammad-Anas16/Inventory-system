@@ -2,7 +2,7 @@ import { FaSearch } from "react-icons/fa";
 import { FiDownload } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
 
-const TopBar = () => {
+const TopBar = ({ setShowInput }) => {
   return (
     <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between w-full mb-6 px-4 gap-4">
       {/* Search Section */}
@@ -22,9 +22,12 @@ const TopBar = () => {
           <span>Download Sheet</span>
         </button>
 
-        <button className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition active:scale-95 w-full sm:w-auto">
+        <button
+          onClick={() => setShowInput(true)}
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition active:scale-95 w-full sm:w-auto"
+        >
           <FaPlus size={18} />
-          <span>New</span>
+          <span>New Field</span>
         </button>
       </div>
     </div>
