@@ -3,7 +3,7 @@ import Header from "../reusable/Header";
 import TopBar from "../InventoryComponents/topBar";
 import TableHeadRow from "../InventoryComponents/TableHeadRow";
 
-import TableInputRow from "../InventoryComponents/TableInputRow";
+// import TableInputRow from "../InventoryComponents/TableInputRow";
 import TableDataRow from "../InventoryComponents/TableDataRow";
 
 const InventoryPage = () => {
@@ -14,20 +14,12 @@ const InventoryPage = () => {
   const [showInput, setShowInput] = useState(false);
   const [newHeader, setNewHeader] = useState("");
 
-  const [rowData, setRowData] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [rows, setRows] = useState(() => {
     const savedRows = localStorage.getItem("rows");
     return savedRows ? JSON.parse(savedRows) : [];
   });
-
-  const addRow = () => {
-    if (Object.keys(rowData).length === 0) {
-      alert("Please fill in the fields before saving.");
-      return;
-    }
-    setRows([...rows, rowData]);
-    setRowData({});
-  };
 
   const addHeader = (e) => {
     if (e.key === "Escape") {
@@ -46,6 +38,35 @@ const InventoryPage = () => {
       setShowInput(false);
     }
   };
+
+  const handleTopBarKeyDown = (e) => {
+    if (e.key === "Enter" && searchTerm.trim() !== "") {
+      // Check if product exists
+      const exists = rows.some(
+        (row) => row["Name"]?.toLowerCase() === searchTerm.trim().toLowerCase(),
+      );
+
+      if (!exists) {
+        const newRow = { Name: searchTerm }; // Add new row, only Name for now
+        setRows([...rows, newRow]);
+      }
+
+      setSearchTerm(""); // Clear input after adding
+    }
+  };
+
+  // Filtered rows for search
+  const filteredRows = rows.filter((row) =>
+    headers
+      .filter((h) => h !== "#")
+      .some((header) =>
+        row[header]
+          ?.toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()),
+      ),
+  );
+
   useEffect(() => {
     localStorage.setItem("headers", JSON.stringify(headers));
     localStorage.setItem("rows", JSON.stringify(rows));
@@ -54,7 +75,12 @@ const InventoryPage = () => {
   return (
     <div>
       <Header />
-      <TopBar setShowInput={setShowInput} />
+      <TopBar
+        setShowInput={setShowInput}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onEnter={handleTopBarKeyDown}
+      />
       <div className="overflow-auto p-4">
         <table className="min-w-full border-collapse">
           <thead>
@@ -68,15 +94,7 @@ const InventoryPage = () => {
           </thead>
 
           <tbody>
-            <TableInputRow
-              headers={headers}
-              rowData={rowData}
-              setRowData={setRowData}
-              addRow={addRow}
-            />
-
-
-            {rows.map((row, index) => (
+            {filteredRows.map((row, index) => (
               <TableDataRow
                 key={index}
                 headers={headers}

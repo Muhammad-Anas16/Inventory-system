@@ -2,7 +2,7 @@ import { FaSearch } from "react-icons/fa";
 import { FiDownload } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
 
-const TopBar = ({ setShowInput }) => {
+const TopBar = ({ setShowInput, searchTerm, setSearchTerm, onEnter }) => {
   return (
     <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between w-full mb-6 px-4 gap-4">
       {/* Search Section */}
@@ -10,8 +10,11 @@ const TopBar = ({ setShowInput }) => {
         <FaSearch size={18} className="text-slate-500" />
         <input
           type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search..."
           className="w-full outline-none text-sm"
+          onKeyDown={onEnter}
         />
       </div>
 
