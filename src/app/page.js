@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Home() {
@@ -59,6 +60,10 @@ export default function Home() {
             Documentation
           </a>
         </div>
+
+        <Button variant="outline" className="mt-10">
+          This is a button from the shadcn/ui library.
+        </Button>
       </main>
     </div>
   );
